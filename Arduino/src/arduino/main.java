@@ -6,9 +6,12 @@ public class main {
         Besturing bestuur = new Besturing(connect);
         
         if(connect.initialize()){
-            bestuur.ledAan();
-            bestuur.ledUit();
-            bestuur.ledBlink();
+            bestuur.rechts();
+            bestuur.start();
+            bestuur.stop();
+            bestuur.links();
+            bestuur.start();
+            bestuur.stop();
             connect.close();
         }
         
