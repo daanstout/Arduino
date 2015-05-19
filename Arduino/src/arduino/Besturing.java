@@ -9,29 +9,29 @@ public class Besturing {
     
     // plaats hier je functies
     
-    public void rechts(){
-        c.sendData("rechts");
+    public void omhoog(){
+        c.sendData("u");
         try{
             Thread.sleep(2000);
         }catch (InterruptedException ie){}
     }
     
-    public void links(){
-        c.sendData("links");
+    public void omlaag(){
+        c.sendData("d");
         try{
             Thread.sleep(2000);
         }catch (InterruptedException ie){}
     }
     
-    public void start(){
-        c.sendData("start");
+    public void start(int delay){
+        c.sendData("g");
         try{
-            Thread.sleep(2000);
+            Thread.sleep(delay);
         }catch (InterruptedException ie){}
     }
     
     public void stop(){
-        c.sendData("stop");
+        c.sendData("s");
         try{
             Thread.sleep(2000);
         }catch (InterruptedException ie){}

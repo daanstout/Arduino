@@ -10,11 +10,11 @@ void setup() {
 }
 
 
-void linksOm(){
+void omlaag(){
   digitalWrite(M2, LOW);
 }
 
-void rechtsOm(){
+void omhoog(){
   digitalWrite(M2, HIGH);
 }
 
@@ -26,18 +26,18 @@ void startDraai(){
   analogWrite(E2, 255);
 }
 
-
 void loop(){
   if (Serial.available() > 0){
-    String ch = Serial.readStringUntil('\n');
-     if(ch == "start"){
+//    String ch = Serial.readStringUntil('\n');
+    char ch = Serial.read();
+    if(ch == 'g'){
       startDraai();
-    }else if(ch == "stop"){
+    }else if(ch == 's'){
       stopDraai();
-    }else if(ch == "links"){
-      linksOm();
-    }else if(ch == "rechts"){
-      rechtsOm();
+    }else if(ch == 'd'){
+      omlaag();
+    }else if(ch == 'u'){
+      omhoog();
     }
   }
 }
