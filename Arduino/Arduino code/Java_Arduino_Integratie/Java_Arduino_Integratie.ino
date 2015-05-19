@@ -1,39 +1,43 @@
+int E1 = 5;
+int M1 = 4;
+int E2 = 6;
+int M2 = 7;
+
 void setup() {
-  pinMode(7, OUTPUT);
   Serial.begin(9600);
+  pinMode(M1, OUTPUT);   
+  pinMode(M2, OUTPUT); 
 }
 
-void naarLinks(){
-  Serial.println("Ik ga nu naar links");
+
+void linksOm(){
+  digitalWrite(M2, LOW);
 }
 
-void naarRechts(){
-  Serial.println("Ik ga nu naar rechts");
+void rechtsOm(){
+  digitalWrite(M2, HIGH);
 }
 
-void ledAan(){
-  digitalWrite(7, HIGH);
+void stopDraai(){
+  analogWrite(E2, 0);
 }
 
-void ledUit(){
-  digitalWrite(7, LOW);
+void startDraai(){
+  analogWrite(E2, 255);
 }
+
 
 void loop(){
   if (Serial.available() > 0){
-    String recv = Serial.readStringUntil('\n');
-
-    if (recv == "naarLinks"){
-      naarLinks();
-    }
-    if (recv == "naarRechts"){
-      naarRechts();
-    }
-    if (recv == "ledAan"){
-      ledAan();
-    }
-    if (recv == "ledUit"){
-      ledUit();
+    String ch = Serial.readStringUntil('\n');
+     if(ch == "start"){
+      startDraai();
+    }else if(ch == "stop"){
+      stopDraai();
+    }else if(ch == "links"){
+      linksOm();
+    }else if(ch == "rechts"){
+      rechtsOm();
     }
   }
 }
