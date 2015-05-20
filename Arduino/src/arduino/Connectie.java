@@ -10,8 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-public class Connectie implements SerialPortEventListener
-{
+public class Connectie implements SerialPortEventListener{
     SerialPort serialPort = null;
     private static final String PORT_NAMES[] =
     {
@@ -23,27 +22,19 @@ public class Connectie implements SerialPortEventListener
     private BufferedReader input;
     private OutputStream output;
 
-    public Connectie()
-    {
+    public Connectie(){
         appName = getClass().getName();
     }
 
-    public boolean initialize()
-    {
-        try
-        {
+    public boolean initialize(){
+        try{
             CommPortIdentifier portId = null;
             Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
-            while (portId == null && portEnum.hasMoreElements())
-            {
+            while (portId == null && portEnum.hasMoreElements()){
                 CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-                for (String portName : PORT_NAMES)
-                {
-                    if (currPortId.getName().equals(portName)
-                            || currPortId.getName().startsWith(portName))
-                    {
-
+                for (String portName : PORT_NAMES){
+                    if (currPortId.getName().equals(portName) || currPortId.getName().startsWith(portName)){
                         serialPort = (SerialPort) currPortId.open(appName, TIME_OUT);
                         portId = currPortId;
                         break;
@@ -51,8 +42,7 @@ public class Connectie implements SerialPortEventListener
                 }
             }
 
-            if (portId == null || serialPort == null)
-            {
+            if (portId == null || serialPort == null){
                 System.out.println("Oops... Could not connect to Arduino");
                 return false;
             }
@@ -68,58 +58,41 @@ public class Connectie implements SerialPortEventListener
             serialPort.notifyOnDataAvailable(true);
 
             // Give the Arduino some time
-            try
-            {
+            try{
                 Thread.sleep(2000);
-            }
-            catch (InterruptedException ie)
-            {
-            }
+            }catch (InterruptedException ie){}
 
             return true;
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
             e.printStackTrace();
         }
         return false;
     }
 
-    public void sendData(String data)
-    {
-        try
-        {
+    public void sendData(String data){
+        try{
             System.out.println("Data versturen: '" + data + "'");
-
             output = serialPort.getOutputStream();
             output.write(data.getBytes());
-        }
-        catch (Exception e)
-        {
+        }catch (Exception e){
             System.err.println(e.toString());
             System.exit(0);
         }
     }
 
-    public synchronized void close()
-    {
-        if (serialPort != null)
-        {
+    public synchronized void close(){
+        if (serialPort != null){
             serialPort.removeEventListener();
             serialPort.close();
         }
     }
 
-    public synchronized void serialEvent(SerialPortEvent oEvent)
-    {
+    public synchronized void serialEvent(SerialPortEvent oEvent){
         System.out.println("Event ontvangen: " + oEvent.toString());
-        try
-        {
-            switch (oEvent.getEventType())
-            {
+        try{
+            switch (oEvent.getEventType()){
                 case SerialPortEvent.DATA_AVAILABLE:
-                    if (input == null)
-                    {
+                    if (input == null){
                         input = new BufferedReader(new InputStreamReader(serialPort.getInputStream()));
                     }
                     String inputLine = input.readLine();
@@ -138,12 +111,8 @@ public class Connectie implements SerialPortEventListener
             }
         }
 
-        catch (Exception e)
-        {
+        catch (Exception e){
             System.err.println(e.toString());
         }
     }
-
-    
-
 }

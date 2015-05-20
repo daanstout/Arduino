@@ -17,8 +17,6 @@ public class main {
         
         try{
             Thread.sleep(2000);
-        }
-        catch (InterruptedException ie){
-        }
+        }catch (InterruptedException ie){}
     }
 }
