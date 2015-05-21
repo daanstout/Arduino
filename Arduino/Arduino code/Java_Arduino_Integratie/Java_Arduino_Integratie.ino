@@ -16,6 +16,23 @@ void setup() {
   myservo.attach(9);
 }
 
+void links(){
+  digitalWrite(M1, HIGH);
+  snelheid = 150;
+}
+
+void rechts(){
+  digitalWrite(M1, LOW);
+  snelheid = 150;
+}
+
+void startHorizontaal(){
+  digitalWrite(E1, snelheid);
+}
+
+void stopHorizontaal(){
+  digitalWrite(E1, 0);
+}
 
 void omlaag(){
   digitalWrite(M2, HIGH);
@@ -65,6 +82,14 @@ void loop(){
       servoIn();
     }else if(ch == 'o'){
       servoOut();
+    }else if(ch == 'l'){
+      links();
+    }else if(ch == 'r'){
+      rechts();
+    }else if(ch == 'b'){
+      startHorizontaal();
+    }else if(ch == 'q'){
+      stopHorizontaal();
     }else if(ch == 't'){
       omhoog();
       startVerticaal();
