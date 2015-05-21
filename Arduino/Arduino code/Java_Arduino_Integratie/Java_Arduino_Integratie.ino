@@ -91,6 +91,10 @@ void loop(){
     }else if(ch == 'q'){
       stopHorizontaal();
     }else if(ch == 't'){
+      links();
+      startHorizontaal();
+      delay(2000);
+      stopHorizontaal();
       omhoog();
       startVerticaal();
       delay(2000);
@@ -101,6 +105,10 @@ void loop(){
       startVerticaal();
       delay(2000);
       stopVerticaal();
+      rechts();
+      startHorizontaal();
+      delay(2000);
+      stopHorizontaal();
     } 
   }
 }
