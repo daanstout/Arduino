@@ -18,12 +18,12 @@ void setup() {
 
 void links(){
   digitalWrite(M1, HIGH);
-  snelheid = 150;
+  snelheid = 25;
 }
 
 void rechts(){
   digitalWrite(M1, LOW);
-  snelheid = 150;
+  snelheid = 255;
 }
 
 void startHorizontaal(){
