@@ -6,12 +6,7 @@ public class main {
         Besturing bestuur = new Besturing(connect);
         
         if(connect.initialize()){
-            bestuur.omhoog();
-            bestuur.start(2000);
-            bestuur.stop();
-            bestuur.omlaag();
-            bestuur.start(2000);
-            bestuur.stop();
+            
             connect.close();
         }
         
