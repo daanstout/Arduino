@@ -68,8 +68,8 @@ void servoIn(){
 
 void loop(){
   if (Serial.available() > 0){
-//    String ch = Serial.readStringUntil('\n');
-    char ch = Serial.read();
+    String ch = Serial.readStringUntil('\n');
+//    char ch = Serial.read();
     if(ch == 'g'){
       startVerticaal();
     }else if(ch == 's'){
@@ -93,7 +93,7 @@ void loop(){
     }else if(ch == 't'){
       links();
       startHorizontaal();
-      delay(2000);
+      delay(1000);
       stopHorizontaal();
       omhoog();
       startVerticaal();
@@ -107,7 +107,7 @@ void loop(){
       stopVerticaal();
       rechts();
       startHorizontaal();
-      delay(2000);
+      delay(1000);
       stopHorizontaal();
     } 
   }
