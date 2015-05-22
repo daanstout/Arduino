@@ -1,5 +1,8 @@
 #include <Servo.h>
 
+#define legoSensorPin 14 // digital pin D14 is analog pin A0
+#define legoSensor 0 // this time we define the analog channel
+
 Servo myservo;
 
 int pos = 0;
@@ -36,12 +39,12 @@ void stopHorizontaal(){
 
 void omlaag(){
   digitalWrite(M2, HIGH);
-  snelheid = 150;
+  snelheid = 100;
 }
 
 void omhoog(){
   digitalWrite(M2, LOW);
-  snelheid = 200;
+  snelheid = 100;
 }
 
 void stopVerticaal(){
@@ -65,6 +68,16 @@ void servoIn(){
     delay(20);
   }
 }
+
+int ReadLegoSensor(){
+  pinMode(legoSensorPin, OUTPUT); //set pin as output
+  digitalWrite(legoSensorPin, HIGH); //set output high
+  delay(10); // wait a bit
+  pinMode(legoSensorPin, INPUT); //set pin as input
+  int value=analogRead(legoSensor); //read the input
+  return value; //return the raw value
+}
+
 
 void loop(){
   if (Serial.available() > 0){
@@ -93,22 +106,39 @@ void loop(){
     }else if(ch == 't'){
       links();
       startHorizontaal();
-      delay(2000);
+      delay(5000);
       stopHorizontaal();
       omhoog();
       startVerticaal();
-      delay(2000);
+      delay(1000);
       stopVerticaal();
-      servoOut();
-      servoIn();
-      omlaag();
-      startVerticaal();
-      delay(2000);
-      stopVerticaal();
-      rechts();
+      links();
       startHorizontaal();
       delay(2000);
       stopHorizontaal();
-    } 
+    }
   }
+  links();
+  //startHorizontaal();
+  int raw=ReadLegoSensor(); // we read the raw value of the sensor
+  //Serial.print("Raw value: ");
+  //Serial.println(map(raw, 0, 1024, 0, 100)); // and print it to the monitor
+  int count = 0;
+  int avg = 0;
+  while(count < 5){
+    avg = avg + map(raw, 0, 1024, 0, 100);
+    count++;
+  }
+  
+  if(count == 4){
+     count = 0; 
+  }
+  
+  Serial.println(avg / 5);
+  avg = avg / 5;
+  if(avg == 13){
+    stopHorizontaal();
+  }
+  avg = 0;
+  
 }
