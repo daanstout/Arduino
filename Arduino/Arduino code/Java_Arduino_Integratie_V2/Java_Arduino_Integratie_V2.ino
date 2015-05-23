@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include <Wire.h>
 
 #define legoSensorPin 14
 #define legoSensor 0
@@ -17,6 +18,7 @@ int val = 0;
 
 void setup(){
   Serial.begin(9600);
+  Wire.begin();
   pinMode(M1, OUTPUT);
   pinMode(M2, OUTPUT);
   pinMode(inputa, INPUT);
@@ -178,13 +180,21 @@ void loop(){
     }else if(ch == "ServoOut"){
       TSPServoOut();
     }else if(ch == "BBPBandLeft"){
-      // code om de band naar links te laten gaan
+      Wire.beginTransmission(4);
+      Wire.write("BandLeft");
+      Wire.endTransmission();
     }else if(ch == "BBPBandRight"){
-      // code om de band naar rechts te laten gaan
+      Wire.beginTransmission(4);
+      Wire.write("BandRight");
+      Wire.endTransmission();
     }else if(ch == "BBPTrainUp"){
-      // code om de trein omhoog te laten gaan
+      Wire.beginTransmission(4);
+      Wire.write("TrainUp");
+      Wire.endTransmission();
     }else if(ch == "BBPTrainDown"){
-      // code om de trein omlaag te laten gaan
+      Wire.beginTransmission(4);
+      Wire.write("TrainDown");
+      Wire.endTransmission();
     }
   }
 }
