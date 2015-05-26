@@ -82,7 +82,7 @@ void loop(){
       BBPTrainDown();
     }
   }
-  if(analogRead(input) > 1000){
+  if(analogRead(input) > 500){
     Serial.println(analogRead(input));
     delay(1000);
     BBPBandStop();
