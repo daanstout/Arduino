@@ -33,17 +33,17 @@ void BBPBandStop(){
 }
 
 void BBPTrainUp(){
-  digitalWrite(E2, LOW);
+  digitalWrite(E2, 0);
   snelheid = 1;
 }
 
 void BBPTrainDown(){
-  digitalWrite(E2, HIGH);
+  digitalWrite(E2, 5);
   snelheid = 1;
 }
 
 void BBPTrainStop(){
-  digitalWrite(M2, 0);
+  digitalWrite(M2, LOW);
 }
 
 void BBPTrainStart(){
@@ -53,7 +53,7 @@ void BBPTrainStart(){
   }else{
     trainPos = 0;
   }
-  digitalWrite(M2, snelheid);
+  digitalWrite(M2, HIGH);
   delay(400);
   BBPTrainStop();
 }
