@@ -97,7 +97,5 @@ void loop(){
     delay(1000);
     BBPBandLeft();
     BBPBandStart();
-    delay(1000);
-    BBPBandStop();
   }
 }
