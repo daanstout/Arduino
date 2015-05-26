@@ -48,9 +48,9 @@ void BBPTrainStop(){
 
 void BBPTrainStart(){
   Serial.println("start");
-  if(trainPos = 0){
+  if(trainPos == 0){
     trainPos = 1;
-  }else{
+  }else if(trainPos == 1){
     trainPos = 0;
   }
   digitalWrite(M2, HIGH);
@@ -86,10 +86,10 @@ void loop(){
     Serial.println(analogRead(input));
     delay(1000);
     BBPBandStop();
-    if(trainPos = 1){
+    if(trainPos == 1){
       BBPTrainUp();
       Serial.println("up");
-    }else{
+    }else if(trainPos == 0){
       BBPTrainDown();
       Serial.println("down");
     }
