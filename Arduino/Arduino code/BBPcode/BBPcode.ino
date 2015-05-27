@@ -1,3 +1,5 @@
+#include <Wire.h>
+
 int input = A0;
 int val = 0;
 int M1 = 5;
@@ -6,10 +8,13 @@ int M2 = 6;
 int E2 = 7;
 int snelheid = 0;
 int trainPos = 0;
+int c;
 
 void setup(){
   Serial.begin(9600);
   pinMode(input, INPUT);
+  Wire.begin(4);
+  Wire.onReceive(receiveEvent);
 }
 
 void BBPBandLeft(){
@@ -38,7 +43,7 @@ void BBPTrainUp(){
 }
 
 void BBPTrainDown(){
-  digitalWrite(E2, 5);
+  digitalWrite(E2, 3);
   snelheid = 1;
 }
 
@@ -59,43 +64,39 @@ void BBPTrainStart(){
 }
 
 void loop(){
-  if(Serial.available() > 0){
-    Serial.println("test");
-    char ch = Serial.read();
-    if(ch == 'l'){
-      Serial.println("test2");
-      BBPBandLeft();
-    }else if(ch == 'r'){
-      BBPBandRight();
-    }else if(ch == 'g'){
-      Serial.println("test2");
-      BBPBandStart();
-    }else if(ch == 's'){
-      BBPBandStop();
-    }else if(ch == 'b'){
-      BBPTrainStart();
-    }else if(ch == 'q'){
-      BBPTrainStop();
-    }else if(ch == 'u'){
-      BBPTrainUp();
-    }else if(ch == 'd'){
-      BBPTrainDown();
-    }
+  delay(100);
+}
+
+void receiveEvent(int howMany){
+  while(Wire.available()){
+    c = Wire.read();
   }
-  if(analogRead(input) > 500){
-    Serial.println(analogRead(input));
-    delay(1000);
-    BBPBandStop();
-    if(trainPos == 1){
-      BBPTrainUp();
-      Serial.println("up");
-    }else if(trainPos == 0){
-      BBPTrainDown();
-      Serial.println("down");
+  BBPBandLeft();
+  BBPBandStart();
+  if(c == trainPos){
+    boolean bandLoop = true;
+    while(bandLoop){
+      if(analogRead(input) < 700){
+        delay(1000);
+        bandLoop = false;
+      }
     }
-    BBPTrainStart();
-    delay(1000);
-    BBPBandLeft();
-    BBPBandStart();
+    BBPBandStop();
+  }else if(c != trainPos){
+    boolean bandLoop = true;
+    while(bandLoop){
+      if(analogRead(input) < 700){
+        BBPBandStop();
+        if(trainPos == 1){
+          BBPTrainUp();
+        }else if(trainPos == 0){
+          BBPTrainDown();
+        }
+        BBPTrainStart();
+        BBPBandStart();
+        bandLoop = false;
+      }
+    }
+    BBPBandStop();
   }
 }
