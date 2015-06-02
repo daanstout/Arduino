@@ -73,7 +73,7 @@ void loop(){
     if(trainStart == trainPos){
       boolean bandLoop = true;
       while(bandLoop){
-        if(analogRead(input) > 700){
+        if(analogRead(input) > 1000){
           Serial.println("pakket");
           delay(3000);
           bandLoop = false;
@@ -83,7 +83,7 @@ void loop(){
     }else if(trainStart != trainPos){
       boolean bandLoop = true;
       while(bandLoop){
-        if(analogRead(input) > 700){
+        if(analogRead(input) > 1000){
           Serial.println("pakket");
           BBPBandStop();
           if(trainPos == "down"){
