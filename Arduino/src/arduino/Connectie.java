@@ -14,14 +14,19 @@ public class Connectie implements SerialPortEventListener{
     SerialPort serialPort = null;
     private static final String PORT_NAMES[] =
     {
-        "COM9",
+        "COM7",
     };
     private static final int TIME_OUT = 1000; // Port open timeout
     private static final int DATA_RATE = 9600; // Arduino serial port
     private String appName;
     private BufferedReader input;
     private OutputStream output;
+    private String arduinoOutput;
 
+    public String getOutput(){
+        return arduinoOutput;
+    }
+    
     public Connectie(){
         appName = getClass().getName();
     }
@@ -102,6 +107,8 @@ public class Connectie implements SerialPortEventListener{
 //                        System.out.println("klaar!");
 //                        klaar = true;
 //                    }
+                    
+                    arduinoOutput = inputLine;
                     System.out.println(inputLine);
 
                     break;

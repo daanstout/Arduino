@@ -7,7 +7,7 @@ int E1 = 4;
 int M2 = 6;
 int E2 = 7;
 int snelheid = 0;
-int trainPos = 0;
+String trainPos = "up";
 int c;
 
 void setup(){
@@ -53,10 +53,10 @@ void BBPTrainStop(){
 
 void BBPTrainStart(){
   Serial.println("start");
-  if(trainPos == 0){
-    trainPos = 1;
-  }else if(trainPos == 1){
-    trainPos = 0;
+  if(trainPos == "up"){
+    trainPos = "down";
+  }else if(trainPos == "down"){
+    trainPos = "up";
   }
   digitalWrite(M2, HIGH);
   delay(400);
@@ -71,25 +71,31 @@ void receiveEvent(int howMany){
   while(Wire.available()){
     c = Wire.read();
   }
+  String trainStart;
+  if(c == 1){
+    trainStart = "up";
+  }else if(c == 0){
+    trainStart = "down";
+  }
   BBPBandLeft();
   BBPBandStart();
-  if(c == trainPos){
+  if(trainStart == trainPos){
     boolean bandLoop = true;
     while(bandLoop){
-      if(analogRead(input) < 700){
+      if(analogRead(input) > 700){
         delay(1000);
         bandLoop = false;
       }
     }
     BBPBandStop();
-  }else if(c != trainPos){
+  }else if(trainStart != trainPos){
     boolean bandLoop = true;
     while(bandLoop){
       if(analogRead(input) < 700){
         BBPBandStop();
-        if(trainPos == 1){
+        if(trainPos == "down"){
           BBPTrainUp();
-        }else if(trainPos == 0){
+        }else if(trainPos == "up"){
           BBPTrainDown();
         }
         BBPTrainStart();

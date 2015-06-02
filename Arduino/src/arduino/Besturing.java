@@ -9,6 +9,13 @@ public class Besturing {
     
     // plaats hier je functies
     
+    public void sendString(String d){
+        c.sendData(d);
+        try{
+            Thread.sleep(2000);
+        }catch (InterruptedException ie){}
+    }
+    
     public void TSPLiftUp(int hoeveel){
         c.sendData("TSPLiftUp");
         try{
