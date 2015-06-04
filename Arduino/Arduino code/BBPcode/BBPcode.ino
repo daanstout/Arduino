@@ -9,6 +9,7 @@ int E2 = 7;
 int snelheid = 0;
 String trainPos = "up";
 int c;
+byte buffer[];
 
 void setup(){
   Serial.begin(9600);
@@ -69,7 +70,7 @@ void loop(){
 
 void receiveEvent(int howMany){
   while(Wire.available()){
-    c = Wire.read();
+    c = Wire.readBytesUntil(',', buffer[], 1);
   }
   String trainStart;
   if(c == 1){
@@ -82,7 +83,8 @@ void receiveEvent(int howMany){
   if(trainStart == trainPos){
     boolean bandLoop = true;
     while(bandLoop){
-      if(analogRead(input) > 700){
+      if(analogRead(input) > 1000){
+        Serial.println("pakket");
         delay(1000);
         bandLoop = false;
       }
@@ -91,7 +93,8 @@ void receiveEvent(int howMany){
   }else if(trainStart != trainPos){
     boolean bandLoop = true;
     while(bandLoop){
-      if(analogRead(input) < 700){
+      if(analogRead(input) > 1000){
+        Serial.println("pakket");
         BBPBandStop();
         if(trainPos == "down"){
           BBPTrainUp();

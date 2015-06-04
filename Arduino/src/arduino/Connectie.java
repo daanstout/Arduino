@@ -5,7 +5,6 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
@@ -15,10 +14,18 @@ public class Connectie implements SerialPortEventListener{
     private static final String PORT_NAMES[] =
     {
         "COM7",
+        "COM1",
+        "COM2",
+        "COM3",
+        "COM4",
+        "COM5",
+        "COM6",
+        "COM8",
+        "COM9",
     };
     private static final int TIME_OUT = 1000; // Port open timeout
     private static final int DATA_RATE = 9600; // Arduino serial port
-    private String appName;
+    private final String appName;
     private BufferedReader input;
     private OutputStream output;
     private String arduinoOutput;
@@ -92,6 +99,7 @@ public class Connectie implements SerialPortEventListener{
         }
     }
 
+    @Override
     public synchronized void serialEvent(SerialPortEvent oEvent){
         System.out.println("Event ontvangen: " + oEvent.toString());
         try{
