@@ -10,8 +10,9 @@ int ledA = 1;
 int ledB = 2;
 int snelheid = 0;
 String trainPos = "up";
-String c;
+char c;
 String d;
+String e;
 const int buzzerPin = 9;
 const int songLength = 13;
 char notes[] = "cdcd     cdcd"; // a space represents a rest
@@ -28,12 +29,12 @@ void setup(){
 
 void BBPBandLeft(){
   digitalWrite(M1, LOW);
-  snelheid = 150;
+  snelheid = 255;
 }
 
 void BBPBandRight(){
   digitalWrite(M1, HIGH);
-  snelheid = 150;
+  snelheid = 255;
 }
 
 void BBPBandStart(){
@@ -106,51 +107,64 @@ void loop(){
 }
 
 void receiveEvent(int howMany){
+  Serial.println("input gevonden");
+  String string = "";
   while(Wire.available()){
-    c = Wire.readStringUntil(',');
-    d = Wire.readStringUntil('\n');
+    c = Wire.read();
+//    Serial.print(c);
+    string = string+c;
+//    c = Wire.readStringUntil(',');
+//    d = Wire.readStringUntil('\n');
   }
+  Serial.println(string);
+  if(string == "00"){
+    d = "0";
+    e = "0";
+  }else if(string == "01"){
+    d = "0";
+    e = "1";
+  }else if(string == "10"){
+    d = "1";
+    e = "0";
+  }else if(string == "11"){
+    d = "1";
+    e = "1";
+  }
+  Serial.println(d);
+  Serial.println(e);
+//  Serial.println(string);
+//  Serial.println(d);
   String trainStart;
-  if(c == "1"){
+  if(d == "1"){
     trainStart = "up";
-  }else if(c == "0"){
+  }else if(d == "0"){
     trainStart = "down";
   }
+  
+  if(trainStart != trainPos){
+    if(trainPos == "down"){
+      BBPTrainUp();
+    }else if(trainPos == "up"){
+      BBPTrainDown();
+    }
+    BBPTrainStart();
+    delay(20000);
+    BBPTrainStop();
+  }
+  
   BBPBandLeft();
   BBPBandStart();
-  if(trainStart == trainPos){
-    boolean bandLoop = true;
-    while(bandLoop){
-      if(analogRead(input) > 700){
-        Serial.println("pakket");
-        delay(1000);
-        bandLoop = false;
-      }
+  boolean bandLoop = true;
+  while(bandLoop){
+    if(analogRead(input) > 150){
+      Serial.println("pakket");
+      delay(150000);
+      bandLoop = false;
     }
-    BBPBandStop();
-  }else if(trainStart != trainPos){
-    boolean bandLoop = true;
-    while(bandLoop){
-      if(analogRead(input) > 700){
-        Serial.println("pakket");
-        BBPBandStop();
-        if(trainPos == "down"){
-          BBPTrainUp();
-        }else if(trainPos == "up"){
-          BBPTrainDown();
-        }
-//        while(){
-          BBPTrainStart();
-          delay(20000);
-          BBPTrainStop();
-//        }
-        BBPBandStart();
-        bandLoop = false;
-      }
-    }
-    BBPBandStop();
   }
-//  if(d != "0"){
-//    buzzer();
-//  }
+  BBPBandStop();
+  
+  if(e != "0"){
+    buzzer();
+  }
 }
