@@ -6,10 +6,11 @@ public class main {
         Besturing bestuur = new Besturing(connect);
         
         if(connect.initialize()){
-            bestuur.sendString("1");
+            bestuur.sendString("1, 1");
             while(connect.getOutput() == null){
                 
             }
+            System.out.println("end");
             connect.close();
         }
         String test = connect.getOutput();
